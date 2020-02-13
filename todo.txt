@@ -1,0 +1,3 @@
+when we open a movie, save button is disabled and we have to change values of rate and stock to activate it.
+
+rate input can take string and it leads to error

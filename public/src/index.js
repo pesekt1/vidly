@@ -6,12 +6,6 @@ import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.css";
 import { BrowserRouter } from "react-router-dom";
-import logService from "./services/logService";
-
-//show environment variables
-console.log(process.env);
-
-logService.init(); //using Sentry logging service
 
 ReactDOM.render(
   <BrowserRouter>

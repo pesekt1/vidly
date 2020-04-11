@@ -9,31 +9,35 @@ class MoviesTable extends Component {
     {
       path: "title",
       label: "Title",
-      content: movie => <Link to={`/movies/${movie._id}`}>{movie.title}</Link>
+      content: (movie) => (
+        <Link to={`/movies/${movie._id}`}>{movie.title}</Link>
+      ),
     },
     { path: "genre.name", label: "Name" },
     { path: "numberInStock", label: "Stock" },
     { path: "dailyRentalRate", label: "Rate" },
     {
       key: "like",
-      content: movie => (
+      content: (movie) => (
         <Like liked={movie.liked} onClick={() => this.props.onLike(movie)} />
-      )
-    }
+      ),
+    },
   ];
 
+  //we define deleteColumn separately
   deleteColumn = {
     key: "delete",
-    content: movie => (
+    content: (movie) => (
       <button
         onClick={() => this.props.onDelete(movie)}
         className="btn btn-danger btn-sm"
       >
         Delete
       </button>
-    )
+    ),
   };
 
+  //we add deleteColumn (delete buttons) only for logged admin:
   constructor() {
     super();
     const user = auth.getCurrentUser();

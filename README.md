@@ -1,3 +1,7 @@
+Simple react app:
+using axios API for httpServices: get, post, put, delete
+implementing authentication using jwtDecode
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

@@ -6,7 +6,12 @@ import { getMovie, saveMovie } from "../../services/moviesService";
 
 class MovieForm extends Form {
   state = {
-    data: { title: "", genreId: "", numberInStock: "", dailyRentalRate: "" },
+    data: {
+      title: "",
+      genreId: "",
+      numberInStock: "",
+      dailyRentalRate: "",
+    },
     genres: [],
     errors: {},
   };
@@ -16,27 +21,34 @@ class MovieForm extends Form {
     _id: Joi.string(),
     title: Joi.string().required().label("Title"),
     genreId: Joi.string().required().label("Genre"),
-    numberInStock: Joi.number().required().label("Stock"),
-    dailyRentalRate: Joi.number().required().label("Rate"),
+    numberInStock: Joi.number()
+      .required()
+      .min(0)
+      .max(100)
+      .label("Number in Stock"),
+    dailyRentalRate: Joi.number()
+      .required()
+      .min(0)
+      .max(10)
+      .label("Daily Rental Rate"),
   };
 
   async populateGenres() {
     const { data: genres } = await getGenres();
-    console.log("movie form genres", genres);
-    this.setState({ genres: genres });
+    this.setState({ genres });
   }
 
   async populateMovie() {
     try {
       const movieId = this.props.match.params.id;
-      console.log("after populate movie in movie form, movieId:", movieId);
       if (movieId === "new") return;
+
       const { data: movie } = await getMovie(movieId);
-      this.setState({ data: this.mapToViewModel(movie) }); // we add _id property to movie object
-    } catch (error) {
-      if (error.response && error.response.status >= 404)
-        return this.props.history.replace("/not-found");
-    } //if its another response.status then the @sentry/browser will take care of handling error
+      this.setState({ data: this.mapToViewModel(movie) });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        this.props.history.replace("/not-found");
+    }
   }
 
   async componentDidMount() {
@@ -54,23 +66,20 @@ class MovieForm extends Form {
     };
   }
 
-  // movie form button
-  async doSubmit() {
-    //call the server
-    //data is a movie object
-    await saveMovie(this.state.data); // if its new movie, data will be empty object
+  doSubmit = async () => {
+    await saveMovie(this.state.data);
+
     this.props.history.push("/movies");
-    console.log("form submitted");
-  }
+  };
 
   render() {
     return (
       <div>
-        <h1>Movie form</h1>
+        <h1>Movie Form</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("title", "Title")}
           {this.renderSelect("genreId", "Genre", this.state.genres)}
-          {this.renderInput("numberInStock", "Number in stock")}
+          {this.renderInput("numberInStock", "Number in Stock", "number")}
           {this.renderInput("dailyRentalRate", "Rate")}
           {this.renderButton("Save")}
         </form>

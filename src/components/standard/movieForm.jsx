@@ -17,7 +17,7 @@ class MovieForm extends Form {
     title: Joi.string().required().label("Title"),
     genreId: Joi.string().required().label("Genre"),
     numberInStock: Joi.number().required().label("Stock"),
-    dailyRentalRate: Joi.number().required().label("Rate"),
+    dailyRentalRate: Joi.number().required().label("Rate").min(0).max(10),
   };
 
   async populateGenres() {

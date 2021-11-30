@@ -7,17 +7,13 @@ import auth from "../../services/authService";
 class LoginForm extends Form {
   state = {
     data: { username: "", password: "" },
-    errors: {}
+    errors: {},
   };
   Joi = require("@hapi/joi");
 
   schema = {
-    username: Joi.string()
-      .required()
-      .label("User name"),
-    password: Joi.string()
-      .required()
-      .label("Password")
+    username: Joi.string().required().label("User name"),
+    password: Joi.string().required().label("Password"),
   };
 
   doSubmit = async () => {
